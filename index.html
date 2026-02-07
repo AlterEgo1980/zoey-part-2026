@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מסיבת הקריוקי של זואי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body { font-family: 'Heebo', sans-serif; margin: 0; background: #000; color: white; display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* צד ימין */
+        .right-side { width: 40%; background: url('zoey.jpg') no-repeat center center; background-size: cover; position: fixed; top: 0; right: 0; bottom: 0; border-left: 5px solid #ff0050; z-index: 1; }
+        
+        /* צד שמאל */
+        .left-side { width: 60%; margin-right: 40%; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; box-sizing: border-box; }
+        
+        h1 { font-size: 3.5rem; margin: 10px 0 0 0; background: linear-gradient(45deg, #ff0050, #00f2ea); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+        h2 { font-size: 2rem; margin: 5px 0 20px 0; font-weight: 400; }
+
+        /* כפתורי חיפוש */
+        .search-area { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+        .quick-link { text-decoration: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; color: white; background: #222; border: 1px solid #444; transition: 0.3s; }
+        .quick-link:hover { background: #444; border-color: #00f2ea; }
+
+        /* מסגרת הנגן */
+        .video-box { width: 100%; max-width: 600px; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; border: 3px solid #333; margin-bottom: 20px; background: #111; position: relative; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* כפתור פתיחת פלייליסט וקונפטי */
+        .controls-container { width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center; }
+        
+        .btn-group { display: flex; gap: 10px; width: 100%; margin-bottom: 1px; }
+        
+        .collapsible { background: linear-gradient(90deg, #ff0050, #ff0080); color: white; cursor: pointer; padding: 15px; flex: 4; border: none; font-size: 1.3rem; font-weight: bold; border-radius: 15px; }
+        .confetti-btn { background: #222; color: white; cursor: pointer; padding: 15px; flex: 1; border: 1px solid #444; font-size: 1.8rem; border-radius: 15px; }
+
+        /* התוכן הנפתח */
+        .content { width: 100%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #111; border-radius: 0 0 15px 15px; text-align: right; }
+        .content p { padding: 20px; margin: 0; color: #00f2ea; line-height: 1.5; }
+
+        @media (max-width: 800px) { 
+            body { flex-direction: column; } 
+            .right-side { position: relative; width: 100%; height: 300px; border-left: none; border-bottom: 5px solid #ff0050; } 
+            .left-side { width: 100%; margin-right: 0; padding: 20px; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="right-side"></div>
+
+    <div class="left-side">
+        <h1>מסיבת קריוקי 2026</h1>
+        <h2>מזל טוב לזואי! 🎉</h2>
+
+        <div class="search-area">
+            <a href="https://www.youtube.com/results?search_query=קריוקי" target="_blank" class="quick-link">📺 חפשו ביוטיוב</a>
+            <a href="https://www.karaoke.co.il" target="_blank" class="quick-link">🎤 אתר קריוקי.co.il</a>
+        </div>
+
+        <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLFIJ0QwUoF2a5uMRq6yNlSsfleDs2VyXb" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="controls-container">
+            <div class="btn-group">
+                <button type="button" class="collapsible" id="toggleBtn">✨ הבחירות של זואי (לחצו כאן) ✨</button>
+                <button class="confetti-btn" onclick="fireConfetti()">🎊</button>
+            </div>
+            <div class="content" id="playlistContent">
+                <p>
+                    <strong>איך בוחרים שיר?</strong><br>
+                    בתוך חלונית הוידאו למעלה, לחצו על האייקון הקטן בפינה (שלושה קווים ומשולש) כדי לראות את כל 30 השירים שזואי בחרה!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // פונקציית קונפטי יציבה
+        function fireConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    zIndex: 999
+                });
+            } else {
+                alert("הקונפטי בטעינה, נסו שוב עוד שנייה!");
+            }
+        }
+
+        // ניהול פתיחת הרשימה - קוד פשוט וישיר
+        const btn = document.getElementById('toggleBtn');
+        const content = document.getElementById('playlistContent');
+
+        btn.addEventListener('click', function() {
+            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                content.style.maxHeight = "0px";
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    </script>
+</body>
+</html>
