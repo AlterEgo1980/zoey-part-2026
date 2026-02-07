@@ -52,4 +52,63 @@
         iframe { width: 100%; height: 100%; border: none; }
 
         @media (max-width: 800px) { .main-wish { font-size: 4rem; } body { flex-direction: column; } .right-side { position: relative; width: 100%; height: 250px; } .left-side { width: 100%; margin-right: 0; } }
-    </
+    </style>
+</head>
+<body>
+
+    <div class="right-side"></div>
+
+    <div class="left-side">
+        <h1 class="main-wish">מזל טוב לזואי!</h1>
+        <div class="sub-title">מסיבת קריוקי 2026</div>
+
+        <div class="search-box-wrapper">
+            <input type="text" id="ytSearchInput" placeholder="חפשו שיר...">
+            <button class="search-btn" onclick="doYoutubeSearch()">🔍</button>
+        </div>
+
+        <div class="effects-row">
+            <button class="btn-effect" onclick="launchConfetti()">🎊 קונפטי</button>
+            <button class="btn-effect btn-fireworks" onclick="launchFireworks()">🎇 זיקוקים!</button>
+        </div>
+
+        <div class="playlist-section">
+            <div class="playlist-label">✨ הבחירות של זואי ✨</div>
+            <div class="video-box">
+                <iframe src="https://www.youtube.com/embed/videoseries?list=PLFIJ0QwUoF2a5uMRq6yNlSsfleDs2VyXb" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function doYoutubeSearch() {
+            const query = document.getElementById('ytSearchInput').value;
+            if (query) window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' קריוקי')}`, '_blank');
+        }
+
+        function launchConfetti() {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function launchFireworks() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                var particleCount = 50 * (timeLeft / duration);
+                // פיצוץ שמאל וימין
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        document.getElementById('ytSearchInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') doYoutubeSearch(); });
+    </script>
+</body>
+</html>
